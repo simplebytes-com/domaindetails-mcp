@@ -8,6 +8,11 @@
   "bin": {
     "domaindetails-mcp": "./build/index.js"
   },
+  "files": [
+    "build/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "node build.js",
     "prepare": "npm run build",

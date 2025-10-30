@@ -1,0 +1,40 @@
+# Source files (only ship built version)
+src/
+
+# Development files
+build.js
+test-mcp.js
+*.test.js
+*.spec.js
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+
+# Documentation (README is included by default)
+*.md
+!README.md
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MCP Registry (not needed in npm package)
+server.json
