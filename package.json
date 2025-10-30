@@ -1,0 +1,43 @@
+{
+  "name": "domaindetails-mcp",
+  "version": "1.0.0",
+  "description": "DomainDetails MCP Server - Complete domain research toolkit with RDAP, WHOIS, and comprehensive domain information lookup",
+  "mcpName": "io.github.simplebytes-com/domaindetails-mcp",
+  "main": "build/index.js",
+  "type": "module",
+  "bin": {
+    "domaindetails-mcp": "./build/index.js"
+  },
+  "scripts": {
+    "build": "node build.js",
+    "prepare": "npm run build",
+    "start": "node build/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "domain",
+    "rdap",
+    "whois",
+    "dns",
+    "domain-lookup",
+    "domain-research"
+  ],
+  "author": "SimpleBytes",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simplebytes-com/domaindetails-mcp.git"
+  },
+  "homepage": "https://github.com/simplebytes-com/domaindetails-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/simplebytes-com/domaindetails-mcp/issues"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.simplebytes-com/domaindetails-mcp",
+  "description": "Complete domain research toolkit with RDAP, WHOIS, and DNS lookup capabilities",
+  "repository": {
+    "url": "https://github.com/simplebytes-com/domaindetails-mcp",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "domaindetails-mcp",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
