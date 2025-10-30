@@ -22,7 +22,9 @@ Or use directly with npx:
 npx domaindetails-mcp
 ```
 
-## Usage with Claude Desktop
+## Usage
+
+### Option 1: Local Installation (Recommended)
 
 Add to your Claude Desktop configuration file:
 
@@ -52,6 +54,17 @@ Or if installed globally:
   }
 }
 ```
+
+### Option 2: Hosted Version
+
+This server is also available as a hosted service at **mcp.domaindetails.com** for HTTP-based integrations:
+
+```
+GET https://mcp.domaindetails.com/lookup/{domain}
+POST https://mcp.domaindetails.com/mcp/call-tool
+```
+
+The hosted version runs on Cloudflare Workers for global low-latency access. Use the local version for Claude Desktop and the hosted version for custom HTTP integrations.
 
 ## Available Tools
 
