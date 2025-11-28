@@ -22,7 +22,9 @@ Or use directly with npx:
 npx domaindetails-mcp
 ```
 
-## Usage with Claude Desktop
+## Usage
+
+### Claude Desktop
 
 Add to your Claude Desktop configuration file:
 
@@ -41,17 +43,65 @@ Add to your Claude Desktop configuration file:
 }
 ```
 
-Or if installed globally:
+### Claude Code
+
+Add to your Claude Code MCP settings:
+
+```bash
+claude mcp add domaindetails -- npx -y domaindetails-mcp
+```
+
+Or manually add to `~/.claude/claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "domaindetails": {
-      "command": "domaindetails-mcp"
+      "command": "npx",
+      "args": ["-y", "domaindetails-mcp"]
     }
   }
 }
 ```
+
+### Cursor
+
+Add to your Cursor MCP configuration at `~/.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "domaindetails": {
+      "command": "npx",
+      "args": ["-y", "domaindetails-mcp"]
+    }
+  }
+}
+```
+
+### Windsurf
+
+Add to your Windsurf MCP configuration at `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "domaindetails": {
+      "command": "npx",
+      "args": ["-y", "domaindetails-mcp"]
+    }
+  }
+}
+```
+
+### Other MCP Clients
+
+For any MCP-compatible client, use:
+- **Command**: `npx`
+- **Args**: `["-y", "domaindetails-mcp"]`
+
+Or if installed globally:
+- **Command**: `domaindetails-mcp`
 
 ## Available Tools
 
