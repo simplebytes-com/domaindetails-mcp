@@ -1,0 +1,49 @@
+{
+  "name": "domaindetails-mcp",
+  "version": "1.1.0",
+  "description": "DomainDetails MCP Server - Domain research toolkit for Claude Desktop and MCP clients",
+  "mcpName": "io.github.simplebytes-com/domaindetails-mcp",
+  "main": "build/index.js",
+  "type": "module",
+  "bin": {
+    "domaindetails-mcp": "./build/index.js"
+  },
+  "files": [
+    "build/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node build.js",
+    "prepare": "npm run build",
+    "start": "node build/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "domain",
+    "rdap",
+    "whois",
+    "dns",
+    "domain-lookup",
+    "domain-research",
+    "claude",
+    "claude-desktop"
+  ],
+  "author": "SimpleBytes",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simplebytes-com/domaindetails-mcp.git"
+  },
+  "homepage": "https://github.com/simplebytes-com/domaindetails-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/simplebytes-com/domaindetails-mcp/issues"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}
