@@ -1,19 +1,57 @@
 import * as esbuild from 'esbuild';
-import { chmod, readFile, writeFile } from 'fs/promises';
+import { chmod, readFile, writeFile, mkdir } from 'fs/promises';
 
+// Ensure build directory exists
+await mkdir('build', { recursive: true });
+
+// Build CLI entry point
 await esbuild.build({
-  entryPoints: ['src/index.js'],
+  entryPoints: ['src/cli.js'],
   bundle: true,
   platform: 'node',
   target: 'node18',
   format: 'esm',
-  outfile: 'build/index.js',
+  outfile: 'build/cli.js',
   external: ['@modelcontextprotocol/sdk'],
 });
 
-// Add shebang and make executable
-const content = await readFile('build/index.js', 'utf-8');
-await writeFile('build/index.js', `#!/usr/bin/env node\n${content}`);
-await chmod('build/index.js', 0o755);
+// Build MCP server entry point
+await esbuild.build({
+  entryPoints: ['src/mcp-server.js'],
+  bundle: true,
+  platform: 'node',
+  target: 'node18',
+  format: 'esm',
+  outfile: 'build/mcp-server.js',
+  external: ['@modelcontextprotocol/sdk'],
+});
+
+// Build library entry point
+await esbuild.build({
+  entryPoints: ['src/lib.js'],
+  bundle: true,
+  platform: 'node',
+  target: 'node18',
+  format: 'esm',
+  outfile: 'build/lib.js',
+  external: ['@modelcontextprotocol/sdk'],
+});
+
+// Add shebang and make CLI executable
+const cliContent = await readFile('build/cli.js', 'utf-8');
+if (!cliContent.startsWith('#!/usr/bin/env node')) {
+  await writeFile('build/cli.js', `#!/usr/bin/env node\n${cliContent}`);
+}
+await chmod('build/cli.js', 0o755);
+
+// Add shebang and make MCP server executable
+const mcpContent = await readFile('build/mcp-server.js', 'utf-8');
+if (!mcpContent.startsWith('#!/usr/bin/env node')) {
+  await writeFile('build/mcp-server.js', `#!/usr/bin/env node\n${mcpContent}`);
+}
+await chmod('build/mcp-server.js', 0o755);
 
 console.log('Build complete!');
+console.log('  - build/cli.js (CLI entry point)');
+console.log('  - build/mcp-server.js (MCP server entry point)');
+console.log('  - build/lib.js (Library entry point)');

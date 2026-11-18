@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-18 — GitHub synchronization
+
+- Preserve existing CLI/library/MCP entry points, build outputs configuration, package metadata, and usage documentation on a separate branch from the rewritten remote main.
+- Snapshot of existing local work for GitHub backup; this synchronization does not establish new build, editorial, submission, or deployment approval.
+
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),

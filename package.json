@@ -1,12 +1,24 @@
 {
-  "name": "domaindetails-mcp",
-  "version": "1.0.0",
-  "description": "DomainDetails MCP Server - Complete domain research toolkit with RDAP, WHOIS, and comprehensive domain information lookup",
+  "name": "domaindetails",
+  "version": "1.2.0",
+  "description": "Domain information lookup tool - CLI, library, and MCP server. Look up RDAP, WHOIS, and comprehensive domain information.",
   "mcpName": "io.github.simplebytes-com/domaindetails-mcp",
-  "main": "build/index.js",
+  "main": "build/lib.js",
+  "module": "build/lib.js",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./build/lib.js",
+      "default": "./build/lib.js"
+    },
+    "./mcp": {
+      "import": "./build/mcp-server.js",
+      "default": "./build/mcp-server.js"
+    }
+  },
   "bin": {
-    "domaindetails-mcp": "./build/index.js"
+    "domaindetails": "./build/cli.js",
+    "domaindetails-mcp": "./build/mcp-server.js"
   },
   "files": [
     "build/",
@@ -16,17 +28,19 @@
   "scripts": {
     "build": "node build.js",
     "prepare": "npm run build",
-    "start": "node build/index.js"
+    "start": "node build/cli.js",
+    "mcp": "node build/mcp-server.js"
   },
   "keywords": [
-    "mcp",
-    "model-context-protocol",
     "domain",
     "rdap",
     "whois",
     "dns",
     "domain-lookup",
-    "domain-research"
+    "domain-research",
+    "cli",
+    "mcp",
+    "model-context-protocol"
   ],
   "author": "SimpleBytes",
   "license": "MIT",

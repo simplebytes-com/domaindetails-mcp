@@ -1,32 +1,82 @@
-# DomainDetails MCP Server
+# DomainDetails
 
-A Model Context Protocol (MCP) server that provides comprehensive domain research tools including RDAP, WHOIS, and DNS lookup capabilities.
+Domain information lookup tool - CLI, library, and MCP server.
+
+Look up RDAP, WHOIS, and comprehensive domain information using modern protocols with automatic fallback.
 
 ## Features
 
+- **CLI Tool**: Quick domain lookups from the command line
+- **Library**: Import into your Node.js projects
+- **MCP Server**: Integration with Claude Desktop and other MCP clients
 - **RDAP First**: Uses modern RDAP protocol for structured domain data
 - **WHOIS Fallback**: Automatically falls back to WHOIS when RDAP fails
-- **Registry Detection**: Automatically detects the correct RDAP/WHOIS server for any TLD
-- **Comprehensive Coverage**: Supports 50+ TLDs including gTLDs and ccTLDs
-- **Easy Integration**: Works with any MCP-compatible client (Claude Desktop, IDEs, etc.)
+- **50+ TLDs**: Built-in support for common gTLDs and ccTLDs
 
 ## Installation
 
 ```bash
-npm install domaindetails-mcp
+npm install domaindetails
 ```
 
 Or use directly with npx:
 
 ```bash
-npx domaindetails-mcp
+npx domaindetails example.com
 ```
 
 ## Usage
 
-### Option 1: Local Installation (Recommended)
+### CLI
 
-Add to your Claude Desktop configuration file:
+```bash
+# Basic lookup
+npx domaindetails example.com
+
+# Prefer WHOIS over RDAP
+npx domaindetails example.com --whois
+
+# Include raw protocol data
+npx domaindetails example.com --raw
+
+# Show help
+npx domaindetails --help
+```
+
+### Library
+
+```javascript
+import { lookup, DomainLookup } from 'domaindetails';
+
+// Simple lookup
+const result = await lookup('example.com');
+console.log(result);
+
+// With options
+const client = new DomainLookup();
+const result = await client.lookup('google.com', {
+  preferWhois: false,
+  includeRaw: true
+});
+
+// RDAP only
+const rdapResult = await client.rdap('example.com');
+
+// WHOIS only
+const whoisResult = await client.whois('example.com');
+```
+
+### MCP Server
+
+Start the MCP server for use with AI assistants and IDEs:
+
+```bash
+npx domaindetails --mcp
+```
+
+#### Claude Desktop
+
+Add to your Claude Desktop configuration:
 
 **MacOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
@@ -37,47 +87,126 @@ Add to your Claude Desktop configuration file:
   "mcpServers": {
     "domaindetails": {
       "command": "npx",
-      "args": ["-y", "domaindetails-mcp"]
+      "args": ["-y", "domaindetails", "--mcp"]
     }
   }
 }
 ```
 
-Or if installed globally:
+#### Claude Code
+
+Add to your Claude Code MCP settings:
+
+```bash
+claude mcp add domaindetails -- npx -y domaindetails --mcp
+```
+
+Or manually add to `~/.claude/claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "domaindetails": {
-      "command": "domaindetails-mcp"
+      "command": "npx",
+      "args": ["-y", "domaindetails", "--mcp"]
     }
   }
 }
 ```
 
-### Option 2: Hosted Version
+#### Cursor
 
-This server is also available as a hosted service at **mcp.domaindetails.com** for HTTP-based integrations:
+Add to your Cursor MCP configuration at `~/.cursor/mcp.json`:
 
+```json
+{
+  "mcpServers": {
+    "domaindetails": {
+      "command": "npx",
+      "args": ["-y", "domaindetails", "--mcp"]
+    }
+  }
+}
 ```
-GET https://mcp.domaindetails.com/lookup/{domain}
-POST https://mcp.domaindetails.com/mcp/call-tool
+
+#### Windsurf
+
+Add to your Windsurf MCP configuration at `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "domaindetails": {
+      "command": "npx",
+      "args": ["-y", "domaindetails", "--mcp"]
+    }
+  }
+}
 ```
 
-The hosted version runs on Cloudflare Workers for global low-latency access. Use the local version for Claude Desktop and the hosted version for custom HTTP integrations.
+#### Other MCP Clients
 
-## Available Tools
+For any MCP-compatible client, use:
+- **Command**: `npx`
+- **Args**: `["-y", "domaindetails", "--mcp"]`
 
-### `domain_lookup`
+Or use the standalone MCP package:
+- **Command**: `npx`
+- **Args**: `["-y", "domaindetails-mcp"]`
 
-Look up comprehensive domain information using RDAP protocol with WHOIS fallback.
+## API Reference
 
-**Parameters:**
-- `domain` (string, required): The domain name to look up (e.g., example.com)
-- `prefer_whois` (boolean, optional): If true, use WHOIS instead of RDAP as primary method
-- `include_raw` (boolean, optional): If true, include raw protocol response data
+### `lookup(domain, options)`
 
-**Example Response:**
+Main lookup function with RDAP primary, WHOIS fallback.
+
+```javascript
+import { lookup } from 'domaindetails';
+
+const result = await lookup('example.com', {
+  preferWhois: false,  // Use WHOIS as primary method
+  includeRaw: false    // Include raw protocol response
+});
+```
+
+### `rdap(domain, options)`
+
+RDAP-only lookup.
+
+```javascript
+import { rdap } from 'domaindetails';
+
+const result = await rdap('example.com');
+```
+
+### `whois(domain, options)`
+
+WHOIS-only lookup.
+
+```javascript
+import { whois } from 'domaindetails';
+
+const result = await whois('example.com');
+```
+
+### `DomainLookup` Class
+
+Full-featured client for multiple lookups.
+
+```javascript
+import { DomainLookup } from 'domaindetails';
+
+const client = new DomainLookup();
+
+// Multiple lookups with same client
+const result1 = await client.lookup('example.com');
+const result2 = await client.lookup('google.com');
+const result3 = await client.rdap('github.com');
+const result4 = await client.whois('twitter.com');
+```
+
+### Response Format
+
 ```json
 {
   "domain": "example.com",
@@ -89,21 +218,31 @@ Look up comprehensive domain information using RDAP protocol with WHOIS fallback
   "rdap": {
     "registration_date": "1995-08-14T04:00:00Z",
     "expiration_date": "2025-08-13T04:00:00Z",
-    "contacts": [...],
-    "dnssec": {...}
+    "contacts": [...]
   }
 }
 ```
 
 ## Supported TLDs
 
-The server includes built-in registry detection for 50+ TLDs:
-
 **Generic TLDs**: com, net, org, info, biz, name, pro, xyz, top, site, online, tech, store, app, dev, io, ai, co, me, tv, cc
 
 **Country Code TLDs**: uk, ca, au, de, fr, nl, be, ch, at, it, es, se, no, dk, fi, ie, pl, cz, sk, hu, ro, bg, hr, si, lv, lt, ee
 
-For unsupported TLDs, the server will attempt to fetch registry information from IANA's bootstrap service.
+For unsupported TLDs, the library fetches registry information from IANA's bootstrap service.
+
+## MCP Tools
+
+When used as an MCP server, the following tool is available:
+
+### `domain_lookup`
+
+Look up comprehensive domain information.
+
+**Parameters:**
+- `domain` (string, required): The domain name to look up
+- `prefer_whois` (boolean, optional): Use WHOIS as primary method
+- `include_raw` (boolean, optional): Include raw protocol response
 
 ## Development
 
@@ -118,8 +257,11 @@ npm install
 # Build
 npm run build
 
-# Test locally
-node build/index.js
+# Test CLI
+node build/cli.js example.com
+
+# Test MCP server
+node build/mcp-server.js
 ```
 
 ## License
@@ -128,7 +270,6 @@ MIT
 
 ## Support
 
-For issues and questions:
 - GitHub Issues: https://github.com/simplebytes-com/domaindetails-mcp/issues
 - Website: https://domaindetails.com
 
